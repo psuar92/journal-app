@@ -1,7 +1,7 @@
 # JournalApp
 
 ## Overview
-JournalApp is a React-based application designed to help users maintain a personal journal. Currently, the project includes the design husk, with functionality implementation in progress.
+JournalApp is a React-based application designed to help users maintain a personal journal. Currently, the project includes the design skeleton, with functionality implementation in progress.
 
 ## Features
 - [ ] User authentication
