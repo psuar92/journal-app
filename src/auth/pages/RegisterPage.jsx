@@ -1,15 +1,18 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Button, Grid2, Link, TextField, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Button, Grid2, Link, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks";
+import { useMemo, useState } from "react";
+import { startCreatingUserWithEmailPassword } from "../../store/auth";
 
 const formData = {
-    email: 'pedro@mail.com',
-    password: '123456',
-    displayName: 'Pedro Suarez'
+    email: '',
+    password: '',
+    displayName: ''
 }
 
-const formValidations = {
+const formValidator = {
     email: [ (value) => value.includes('@'), 'Insert a valid email' ],
     password: [ (value) => value.length >= 6, 'Password must have at least 6 characters' ],
     displayName: [ (value) => value.length >= 1, 'The name is required' ],
@@ -17,21 +20,30 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+    const dispatch = useDispatch();
+
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const { status, errorMessage } = useSelector(state => state.auth)
+
+    const isAuthenticating = useMemo(() => status === 'checking', [status]);
+
     const {
         formState, displayName, email, password, onInputChange,
         isFormValid, displayNameValid, emailValid, passwordValid,
-    } = useForm(formData, formValidations);
-
-
+    } = useForm(formData, formValidator);
 
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log(formState);
+        setFormSubmitted(true);
+        if (!isFormValid) return;
+
+        dispatch(startCreatingUserWithEmailPassword(formState));
     }
 
     return (
         <AuthLayout title="Register">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='animate__animated animate__fadeIn animate__faster'>
                 <Grid2 container>
                     <Grid2 size={{ xs: 12 }} sx={{ mt: 2 }}>
                         <TextField
@@ -42,7 +54,7 @@ export const RegisterPage = () => {
                             name="displayName"
                             value={displayName}
                             onChange={onInputChange}
-                            error={!displayNameValid}
+                            error={!!displayNameValid && formSubmitted}
                             helperText={displayNameValid}
                         />
                     </Grid2>
@@ -56,6 +68,8 @@ export const RegisterPage = () => {
                             name="email"
                             value={email}
                             onChange={onInputChange}
+                            error={!!emailValid && formSubmitted}
+                            helperText={emailValid}
                         />
                     </Grid2>
 
@@ -68,15 +82,25 @@ export const RegisterPage = () => {
                             name="password"
                             value={password}
                             onChange={onInputChange}
+                            error={!!passwordValid && formSubmitted}
+                            helperText={passwordValid}
                         />
                     </Grid2>
 
                     <Grid2 container size={12} spacing={2} sx={{ mb: 2, mt: 3 }}>
+                        <Grid2 
+                            size={{ xs: 12 }}
+                            display={!!errorMessage ? '' : 'none'}
+                        >
+                            <Alert severity='error'>{errorMessage}</Alert>
+                        </Grid2>
+
                         <Grid2 size={{ xs: 12 }}>
                             <Button 
                                 fullWidth
                                 variant="contained" 
                                 type="submit"
+                                disabled={isAuthenticating}
                             >
                                 Create account
                             </Button>

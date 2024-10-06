@@ -4,6 +4,7 @@ import { Grid2, Typography } from "@mui/material"
 export const NothingSelectedView = () => {
     return (
         <Grid2 container
+            className='animate__animated animate__fadeIn animate__faster'
             spacing={0}
             direction='column'
             align='center'
