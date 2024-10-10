@@ -16,3 +16,6 @@ JournalApp is a React-based application designed to help users maintain a person
 - MaterialUI
 - React Router (for navigation)
 - Redux (for state management)
+
+## Project Demo
+- https://journal-app-psr.vercel.app/
