@@ -9,7 +9,7 @@ JournalApp is a React-based application designed to help users maintain a person
 - [x] View a list of journal entries
 - [x] Create, edit, and delete journal entries
 - [x] Upload images to current note using Cloudinary
-- [x] Mobile optimization
+- [ ] Mobile optimization
 
 ## Technologies Used
 - React
