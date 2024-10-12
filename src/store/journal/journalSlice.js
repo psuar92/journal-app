@@ -9,6 +9,7 @@ export const journalSlice = createSlice({
         notes: [],
         activeNote: null,
         imageUrls: [],
+        open: false, // drawer state
     },
     reducers: {
         addNewEmptyNote: (state, action) => {
@@ -53,7 +54,10 @@ export const journalSlice = createSlice({
             state.messageSaved = '';
             state.notes = [];
             state.activeNote = null;
-        }
+        },
+        toggleDrawer: (state) => {
+            state.open = !state.open;
+        },
     }
 });
 
@@ -67,5 +71,6 @@ export const {
     setNotes,
     setSaving,
     setPhotosToActiveNote,
+    toggleDrawer,
     updateNote,
 } = journalSlice.actions;
